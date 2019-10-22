@@ -19,13 +19,17 @@ const UsuarioSchema = new mongoose.Schema({
         required: true,
         select: false,
     },
+    role: {
+        type: String,
+        default: 'paciente',
+    },
     criadoEm: {
         type: Date,
         default: Date.now,
     }
 });
 
-UsuarioSchema.pre('save', function(fn){
+UsuarioSchema.pre('save', async function(fn){
     const hashedPwd = await bcrypt.hash(this.senha, 10);
     this.senha = hashedPwd;
 
