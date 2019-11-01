@@ -45,6 +45,14 @@ const UsuarioSchema = new mongoose.Schema({
         required: true,
         select: false,
     },
+    tokenResetSenha: {
+        type: String,
+        select: false,
+    },
+    resetSenhaExpiraEm: {
+        type:  Date,
+        select: false,
+    },
     role: {
         type: String,
         default: 'paciente',
