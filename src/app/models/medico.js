@@ -1,7 +1,7 @@
-const mongoose = require('../db');
+const mongoose = require('../../db');
 const bcrypt = require('bcryptjs');
 
-const UsuarioSchema = new mongoose.Schema({
+const MedicoSchema = new mongoose.Schema({
 
     nomeCompleto: {
         type: String,
@@ -28,7 +28,7 @@ const UsuarioSchema = new mongoose.Schema({
     },
     telefoneCelular: {
         type: String,
-        required: true,    
+        required: true,
     },
     email: {
         type: String,
@@ -40,6 +40,35 @@ const UsuarioSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    crm: {
+        type: String,
+        required: true,
+    },
+    endereco: [{
+            cep: {
+                type: String,
+                required: true,
+            },
+            logradouro: {
+                type: String,
+                required: true,
+            },
+            numero: {
+                type: Number,
+            },
+            complemento: {
+                type: String,
+            },
+            cidade: {
+                type: String,
+                required: true,
+            },
+            uf: {
+                type: String,
+                required: true,
+            },
+        }
+    ],
     senha: {
         type: String,
         required: true,
@@ -47,7 +76,7 @@ const UsuarioSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        default: 'paciente',
+        default: 'medico',
     },
     criadoEm: {
         type: Date,
@@ -55,13 +84,13 @@ const UsuarioSchema = new mongoose.Schema({
     }
 });
 
-UsuarioSchema.pre('save', async function(fn){
+MedicoSchema.pre('save', async function (fn) {
     const hashedPwd = await bcrypt.hash(this.senha, 10);
     this.senha = hashedPwd;
 
     fn();
 });
 
-const Usuario = mongoose.model('Usuario', UsuarioSchema);
+const Medico = mongoose.model('Medico', MedicoSchema);
 
-module.exports = Usuario;
+module.exports = Medico;
