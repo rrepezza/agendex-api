@@ -74,10 +74,6 @@ const MedicoSchema = new mongoose.Schema({
         required: true,
         select: false,
     },
-    role: {
-        type: String,
-        default: 'medico',
-    },
     criadoEm: {
         type: Date,
         default: Date.now,

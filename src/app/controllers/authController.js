@@ -6,7 +6,7 @@ const mailer = require('../../modules/mailer');
 
 const config = require('../../config/auth.json');
 
-const Usuario = require('../models/usuario');
+const Paciente = require('../models/paciente');
 
 const router = express.Router();
 
@@ -22,17 +22,17 @@ router.post('/registrar', async (req, res) => {
 
     try {
 
-        if(await Usuario.findOne({ email })) {
-            return res.status(400).send({ error: 'Usuário já está registrado.' });
+        if(await Paciente.findOne({ email })) {
+            return res.status(400).send({ error: 'Paciente já está registrado.' });
         }
 
-        const usuario = await Usuario.create(req.body);
+        const paciente = await Paciente.create(req.body);
 
-        usuario.senha = undefined;
+        paciente.senha = undefined;
 
         return res.send({ 
-            usuario,
-            token: gerarToken({ id: usuario.id }),
+            paciente,
+            token: gerarToken({ id: paciente.id }),
         });
     } catch (error) {
         return res.status(400).send({ error: 'Erro ao cadastrar.' });
@@ -42,21 +42,21 @@ router.post('/registrar', async (req, res) => {
 router.post('./login', async(req, res) => {
     const { cpf, senha } = req.body;
 
-    const usuario = await Usuario.findOne({ cpf }).select('+senha');
+    const paciente = await Paciente.findOne({ cpf }).select('+senha');
 
-    if(!usuario) {
-        return res.status(400).send({ error : 'Usuário não encontrado.'});
+    if(!paciente) {
+        return res.status(400).send({ error : 'Paciente não encontrado.'});
     }
 
-    if(!await bcrypt.compare(senha, usuario.senha)) {
+    if(!await bcrypt.compare(senha, paciente.senha)) {
         return res.status(400).send({ error: 'Senha inválida.'});
     }
 
-    usuario.senha = undefined;
+    paciente.senha = undefined;
 
     res.send({
-        usuario,
-        token: gerarToken({ id: usuario.id }),
+        paciente,
+        token: gerarToken({ id: paciente.id }),
     })
 });
 
@@ -64,10 +64,10 @@ router.post('./senha-esquecida', async(req, res) => {
     const { email } = req.body;
 
     try {
-        const user = await Usuario.findOne({ email });
+        const paciente = await Paciente.findOne({ email });
 
-        if(!user) {
-            res.status(400).send({ error: 'Usuário não encontrado.'});
+        if(!paciente) {
+            res.status(400).send({ error: 'Paciente não encontrado.'});
         }
 
         const token = crypto.randomBytes(20).toString('hex');
@@ -75,7 +75,7 @@ router.post('./senha-esquecida', async(req, res) => {
         const now = new Date();
         now.setHours(now.getHours() + 1);
 
-        await Usuario.findById(user.id, {
+        await Paciente.findById(paciente.id, {
             '$set': {
                 tokenResetSenha: token,
                 resetSenhaExpiraEm: now,
@@ -103,26 +103,26 @@ router.post('./resetar-senha', async(req, res) => {
 
     try {
 
-        const usuario = await Usuario.findOne({ email })
+        const paciente = await Paciente.findOne({ email })
         .select('+tokenResetSenha resetSenhaExpiraEm');
 
-        if(!usuario) {
+        if(!paciente) {
             return res.status(400).send({ error: 'Usuário não encontrado.'});
         }
 
-        if(token !== usuario.tokenResetSenha) {
+        if(token !== paciente.tokenResetSenha) {
             return res.status(400).send({ error: 'Token inválido.'});
         }
 
         const now = new Date();
 
-        if(now > usuario.resetSenhaExpiraEm) {
+        if(now > paciente.resetSenhaExpiraEm) {
             return res.status(400).send({ error: 'Token expirado.'});
         }
 
-        usuario.senha = senha;
+        paciente.senha = senha;
 
-        await usuario.save();
+        await paciente.save();
 
         res.send();
         
