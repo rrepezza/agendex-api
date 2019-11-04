@@ -20,6 +20,7 @@ const MedicoSchema = new mongoose.Schema({
     },
     cpf: {
         type: String,
+        unique: true,
         required: true,
     },
     dataNascimento: {
@@ -41,6 +42,10 @@ const MedicoSchema = new mongoose.Schema({
         required: true,
     },
     crm: {
+        type: String,
+        required: true,
+    },
+    especialidade: {
         type: String,
         required: true,
     },

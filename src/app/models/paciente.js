@@ -20,6 +20,7 @@ const PacienteSchema = new mongoose.Schema({
     },
     cpf: {
         type: String,
+        unique: true,
         required: true,
     },
     dataNascimento: {
