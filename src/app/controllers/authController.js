@@ -39,7 +39,7 @@ router.post('/registrar', async (req, res) => {
     }
 });
 
-router.post('./login', async(req, res) => {
+router.post('/login', async(req, res) => {
     const { cpf, senha } = req.body;
 
     const paciente = await Paciente.findOne({ cpf }).select('+senha');
