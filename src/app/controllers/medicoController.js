@@ -1,11 +1,11 @@
 const express = require('express');
-const authMiddleware = require('../middlewares/auth')
+//const authMiddleware = require('../middlewares/auth')
 
 const Medico = require('../models/medico');
 
 const router = express.Router();
 
-router.use(authMiddleware);
+//router.use(authMiddleware);
 
 router.post('/', async (req, res) => {
     try {
@@ -31,6 +31,15 @@ router.get('/:medicoId', async (req, res) => {
         return res.send({ medico });
     } catch (error) {
         return res.status(400).send({ error: 'Erro ao buscar o médico.'});
+    }
+});
+
+router.get('/:especialidade', async (req, res) => {
+    try {
+        const medicos = await Medico.find({ 'especialidade': req.params.especialidade });
+        return res.send({ medicos });
+    } catch (error) {
+        return res.status(400).send({ error: 'Erro ao buscar o médico pela especialidade informada.'});
     }
 });
 
