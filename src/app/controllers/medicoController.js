@@ -16,6 +16,7 @@ router.post('/', async (req, res) => {
     }
 });
 
+
 router.get('/', async (req, res) => {
     try {
         const medicos = await Medico.find();
@@ -24,6 +25,7 @@ router.get('/', async (req, res) => {
         return res.status(400).send({ error: 'Erro ao listar médicos.'});
     }
 });
+
 
 router.get('/:medicoId', async (req, res) => {
     try {
@@ -34,9 +36,9 @@ router.get('/:medicoId', async (req, res) => {
     }
 });
 
-router.get('/:especialidade', async (req, res) => {
-    try {
-        const medicos = await Medico.find({ 'especialidade': req.params.especialidade });
+router.get('/especialidade/:nomeEspecialidade', async (req, res) => {
+    try {        
+        const medicos = await Medico.find({ especialidade: req.params.nomeEspecialidade });
         return res.send({ medicos });
     } catch (error) {
         return res.status(400).send({ error: 'Erro ao buscar o médico pela especialidade informada.'});
