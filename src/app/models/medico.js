@@ -48,6 +48,7 @@ const MedicoSchema = new mongoose.Schema({
     especialidade: {
         type: String,
         required: true,
+        lowercase: true,
     },
     endereco: [{
             cep: {
@@ -60,6 +61,10 @@ const MedicoSchema = new mongoose.Schema({
             },
             numero: {
                 type: Number,
+            },
+            bairro: {
+                type: String,
+                required: true,
             },
             complemento: {
                 type: String,

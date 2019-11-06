@@ -17,15 +17,12 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:pacienteId', async (req, res) => {
-    res.send({ paciente: req.pacienteId });
-});
-
-router.put('/:pacienteId', async (req, res) => {
-    res.send({ paciente: req.pacienteId });
-});
-
-router.delete('/:pacienteId', async (req, res) => {
-    res.send({ paciente: req.pacienteId });
+    try {
+        const paciente = await Paciente.findById(req.params.pacienteId);
+        return res.send({ paciente });
+    } catch (error) {
+        return res.status(400).send({ error: 'Erro ao buscar o paciente.'});
+    }
 });
 
 module.exports = app => app.use('/pacientes', router);
