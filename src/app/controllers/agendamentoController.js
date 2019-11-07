@@ -7,11 +7,13 @@ const Agendamento = require('../models/agendamento');
 
 const router = express.Router();
 
-router.use(authMiddleware);
+//router.use(authMiddleware);
 
 router.post('/', async (req, res) => {
     try {
-        const agendamento = await Agendamento.create({ ...req.body, paciente: req.pacienteId, medico: req.medicoId });
+        const agendamento = await Agendamento.create({...req.body, paciente: req.body.paciente, medico: req.body.medico});
+
+        return res.send({agendamento});
     } catch (error) {
         return res.status(400).send({ error: 'Erro ao inserir agendamento.'});
     }
@@ -26,13 +28,13 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:pacienteId', async (req, res) => {
+router.get('/:agendamentoId', async (req, res) => {
     try {
-        const paciente = await Paciente.findById(req.params.pacienteId);
-        return res.send({ paciente });
+        const agendamento = await Agendamento.findById(req.params.agendamentoId).populate(['paciente', 'medico']);
+        return res.send({ agendamento });
     } catch (error) {
-        return res.status(400).send({ error: 'Erro ao buscar o paciente.'});
+        return res.status(400).send({ error: 'Erro ao buscar o agendamento.'});
     }
 });
 
-module.exports = app => app.use('/pacientes', router);
+module.exports = app => app.use('/agendamentos', router);
