@@ -11,7 +11,10 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
-        const agendamento = await Agendamento.create({...req.body, paciente: req.body.paciente, medico: req.body.medico});
+
+        const { dataAgendamento } = req.body;
+
+        const agendamento = await Agendamento.create(req.body);
 
         return res.send({agendamento});
     } catch (error) {

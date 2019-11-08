@@ -37,7 +37,7 @@ router.get('/:medicoId', async (req, res) => {
 });
 
 router.get('/especialidade/:nomeEspecialidade', async (req, res) => {
-    try {        
+    try {      
         const medicos = await Medico.find({ especialidade: req.params.nomeEspecialidade });
         return res.send({ medicos });
     } catch (error) {

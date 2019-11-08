@@ -18,11 +18,15 @@ function gerarToken(params = {}) {
 }
 
 router.post('/registrar', async (req, res) => {
-    const { email } = req.body;
+    const { email, cpf } = req.body;
 
     try {
 
         if(await Paciente.findOne({ email })) {
+            return res.status(400).send({ error: 'Paciente já está registrado.' });
+        }
+
+        if(await Paciente.findOne({ cpf })) {
             return res.status(400).send({ error: 'Paciente já está registrado.' });
         }
 
@@ -34,7 +38,7 @@ router.post('/registrar', async (req, res) => {
             paciente,
             token: gerarToken({ id: paciente.id }),
         });
-    } catch (error) {
+    } catch (error) {        
         return res.status(400).send({ error: 'Erro ao cadastrar.' });
     }
 });

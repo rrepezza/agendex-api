@@ -5,20 +5,16 @@ const AgendamentoSchema = new mongoose.Schema({
     dataAgendamento: {
         type: Date,
         required: true,
+        unique: true,
     },
     paciente: {
-        
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Paciente',
-        
-        type: String,
         required: true,
     },
     medico: {
-        
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Medico',
-        
         required: true,
     },
     criadoEm: {
