@@ -11,10 +11,12 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
+               
         const agendamento = await Agendamento.create(req.body);
 
         return res.send({agendamento});
     } catch (error) {
+        
         return res.status(400).send({ error: 'Erro ao inserir agendamento.'});
     }
 });

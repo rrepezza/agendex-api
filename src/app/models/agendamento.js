@@ -26,6 +26,12 @@ const AgendamentoSchema = new mongoose.Schema({
     }
 });
 
+AgendamentoSchema.pre('save', async function(fn){
+    const dataTratada = this.dataAgendamento.replace(/\//g, '-');
+    this.dataAgendamento = dataTratada;
+
+    fn();
+});
 
 const Agendamento = mongoose.model('Agendamento', AgendamentoSchema);
 
