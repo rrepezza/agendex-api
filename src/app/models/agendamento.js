@@ -3,9 +3,12 @@ const mongoose = require('../../db');
 const AgendamentoSchema = new mongoose.Schema({
 
     dataAgendamento: {
-        type: Date,
+        type: String,
         required: true,
-        unique: true,
+    },
+    horaAgendamento: {
+        type: String,
+        required: true,
     },
     paciente: {
         type: mongoose.Schema.Types.ObjectId,
