@@ -6,14 +6,14 @@ const Medico = require('../models/medico');
 const Agendamento = require('../models/agendamento');
 
 const router = express.Router();
-
 //router.use(authMiddleware);
 
 router.post('/', async (req, res) => {
     try {
                
         const agendamento = await Agendamento.create(req.body);
-
+        console.log(agendamento);
+        
         return res.send({agendamento});
     } catch (error) {
         
