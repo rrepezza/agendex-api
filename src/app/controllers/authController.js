@@ -38,7 +38,7 @@ router.post('/registrar', async (req, res) => {
             paciente,
             token: gerarToken({ id: paciente.id }),
         });
-    } catch (error) {        
+    } catch (error) {                
         return res.status(400).send({ error: 'Erro ao cadastrar.' });
     }
 });

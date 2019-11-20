@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     try {
         const pacientes = await Paciente.find();
         return res.send({ pacientes });
-    } catch (error) {
+    } catch (error) {        
         return res.status(400).send({ error: 'Erro ao listar pacientes.'});
     }
 });

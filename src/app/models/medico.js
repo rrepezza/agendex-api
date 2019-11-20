@@ -50,7 +50,7 @@ const MedicoSchema = new mongoose.Schema({
         required: true,
         lowercase: true,
     },
-    endereco: [{
+    endereco: {
             cep: {
                 type: String,
                 required: true,
@@ -77,8 +77,7 @@ const MedicoSchema = new mongoose.Schema({
                 type: String,
                 required: true,
             },
-        }
-    ],
+        },
     senha: {
         type: String,
         required: true,
