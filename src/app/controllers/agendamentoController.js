@@ -10,10 +10,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
-               
-        const agendamento = await Agendamento.create(req.body);
-        console.log(agendamento);
-        
+        const agendamento = await Agendamento.create(req.body);        
         return res.send({agendamento});
     } catch (error) {
         
@@ -42,9 +39,7 @@ router.get('/:agendamentoId', async (req, res) => {
 router.get('/:medicoId/:dataAgendamento', async (req, res) => {
     try {
         const agendamentos = await Agendamento.find({ medico: req.params.medicoId, dataAgendamento: req.params.dataAgendamento });
-        
         const horasDisponiveis = ['08:00','09:00','10:00','11:00','14:00','15:00','16:00','17:00'];
-        
         agendamentos.forEach(agendamento => {
             horasDisponiveis.splice(horasDisponiveis.indexOf(agendamento.horaAgendamento), 1);
         });        
