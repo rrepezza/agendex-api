@@ -22,11 +22,11 @@ router.post('/registrar', async (req, res) => {
 
     try {
 
-        if(await Paciente.findOne({ email })) {
+        if (await Paciente.findOne({ email })) {
             return res.status(400).send({ error: 'Paciente já está registrado.' });
         }
 
-        if(await Paciente.findOne({ cpf })) {
+        if (await Paciente.findOne({ cpf })) {
             return res.status(400).send({ error: 'Paciente já está registrado.' });
         }
 
@@ -34,44 +34,52 @@ router.post('/registrar', async (req, res) => {
 
         paciente.senha = undefined;
 
-        return res.send({ 
+        return res.send({
             paciente,
             token: gerarToken({ id: paciente.id }),
         });
-    } catch (error) {                
+    } catch (error) {
         return res.status(400).send({ error: 'Erro ao cadastrar.' });
     }
 });
 
-router.post('/login', async(req, res) => {
+router.post('/login', async (req, res) => {
     const { cpf, senha } = req.body;
 
-    const paciente = await Paciente.findOne({ cpf }).select('+senha');
+    try {
 
-    if(!paciente) {
-        return res.status(400).send({ error : 'Paciente não encontrado.'});
+        const paciente = await Paciente.findOne({ cpf }).select('+senha');
+
+        if (!paciente) {
+            return res.status(400).send({ error: 'Paciente não encontrado.' });
+        }
+
+        if (!await bcrypt.compare(senha, paciente.senha)) {
+            return res.status(400).send({ error: 'Senha inválida.' });
+        }
+
+        paciente.senha = undefined;
+
+        res.send({
+            paciente,
+            token: gerarToken({ id: paciente.id }),
+        });
+
+    } catch (error) {
+        res.status(400).send({ error: 'Erro ao tentar logar.' });
     }
 
-    if(!await bcrypt.compare(senha, paciente.senha)) {
-        return res.status(400).send({ error: 'Senha inválida.'});
-    }
 
-    paciente.senha = undefined;
-
-    res.send({
-        paciente,
-        token: gerarToken({ id: paciente.id }),
-    })
 });
 
-router.post('./senha-esquecida', async(req, res) => {
+router.post('./senha-esquecida', async (req, res) => {
     const { email } = req.body;
 
     try {
         const paciente = await Paciente.findOne({ email });
 
-        if(!paciente) {
-            res.status(400).send({ error: 'Paciente não encontrado.'});
+        if (!paciente) {
+            res.status(400).send({ error: 'Paciente não encontrado.' });
         }
 
         const token = crypto.randomBytes(20).toString('hex');
@@ -92,36 +100,36 @@ router.post('./senha-esquecida', async(req, res) => {
             template: 'auth/esqueci-minha-senha',
             context: { token },
         }, (err) => {
-            if(err) {
-                return res.status(400).send({ error: "Erro em esqueci minha senha."});
+            if (err) {
+                return res.status(400).send({ error: "Erro em esqueci minha senha." });
             }
         });
-        
+
     } catch (error) {
-        res.status(400).send({ error: 'Erro ao tentar recuperar a senha.'});
+        res.status(400).send({ error: 'Erro ao tentar recuperar a senha.' });
     }
 });
 
-router.post('./resetar-senha', async(req, res) => {
+router.post('./resetar-senha', async (req, res) => {
     const { email, token, senha } = req.body;
 
     try {
 
         const paciente = await Paciente.findOne({ email })
-        .select('+tokenResetSenha resetSenhaExpiraEm');
+            .select('+tokenResetSenha resetSenhaExpiraEm');
 
-        if(!paciente) {
-            return res.status(400).send({ error: 'Usuário não encontrado.'});
+        if (!paciente) {
+            return res.status(400).send({ error: 'Usuário não encontrado.' });
         }
 
-        if(token !== paciente.tokenResetSenha) {
-            return res.status(400).send({ error: 'Token inválido.'});
+        if (token !== paciente.tokenResetSenha) {
+            return res.status(400).send({ error: 'Token inválido.' });
         }
 
         const now = new Date();
 
-        if(now > paciente.resetSenhaExpiraEm) {
-            return res.status(400).send({ error: 'Token expirado.'});
+        if (now > paciente.resetSenhaExpiraEm) {
+            return res.status(400).send({ error: 'Token expirado.' });
         }
 
         paciente.senha = senha;
@@ -129,9 +137,9 @@ router.post('./resetar-senha', async(req, res) => {
         await paciente.save();
 
         res.send();
-        
+
     } catch (error) {
-        res.status(400).send({ error: 'Não foi possível resetar a senha.'});
+        res.status(400).send({ error: 'Não foi possível resetar a senha.' });
     }
 });
 
