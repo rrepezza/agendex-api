@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./app/controllers/index')(app);
 
+/*
 const privateKey = fs.readFileSync(__dirname + '/key.pem');
 const privateCert = fs.readFileSync(__dirname + '/cert.pem');
 
@@ -19,6 +20,6 @@ https.createServer({
     passphrase: 'agendex'
 }, app)
 .listen(3000);
-
-//app.listen(3000);
+*/
+app.listen(3000);
 
