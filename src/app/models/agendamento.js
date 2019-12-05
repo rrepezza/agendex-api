@@ -17,7 +17,7 @@ const AgendamentoSchema = new mongoose.Schema({
     nomeMedico: {
         type: String,
         required: true,
-    }
+    },
     /*
     paciente: {
         type: mongoose.Schema.Types.ObjectId,
