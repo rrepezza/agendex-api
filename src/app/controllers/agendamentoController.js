@@ -36,18 +36,18 @@ router.get('/:agendamentoId', async (req, res) => {
     }
 });
 
-router.get('/:pacienteId', async (req, res) => {
+router.get('/p/:pacienteId', async (req, res) => {
     try {
-        const agendamento = await Agendamento.findById(req.params.pacienteId).populate(['medico']);
+        const agendamento = await Agendamento.find({paciente : req.params.pacienteId }).populate(['medico']);
         return res.send({ agendamento });
     } catch (error) {
         return res.status(400).send({ error: 'Erro ao buscar o agendamento.'});
     }
 });
 
-router.get('/:medicoId', async (req, res) => {
+router.get('/m/:medicoId', async (req, res) => {
     try {
-        const agendamento = await Agendamento.findById(req.params.medicoId).populate(['paciente']);
+        const agendamento = await Agendamento.find({ medico: req.params.medicoId }).populate(['paciente']);
         return res.send({ agendamento });
     } catch (error) {
         return res.status(400).send({ error: 'Erro ao buscar o agendamento.'});

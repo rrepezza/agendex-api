@@ -17,11 +17,22 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:medicoId', async (req, res) => {
+
+
+    const idMedico = req.params.medicoId;
+    const medicoAtualizado = req.body;
+
     try {
-        const medico = await Medico.create(req.body);
-        return res.send({ medico });
+
+        const atualizado = await Medico.findByIdAndUpdate(idMedico, medicoAtualizado, {new : true});
+
+        if(!atualizado) {
+            return res.status(400).send({ error: 'Médico não encontrado.'});
+        }
+
+        return res.send(atualizado);
     } catch (error) {
-        return res.status(400).send({ error: 'Erro ao cadastrar médico.'});
+        return res.status(400).send({ error: 'Erro ao atualizar o médico.'});
     }
 });
 
