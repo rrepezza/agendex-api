@@ -10,9 +10,9 @@ const Paciente = require('../models/paciente');
 
 const router = express.Router();
 
-function gerarToken(params = {}) {
-    return //agendex_do_vandinho
-    const token = jwt.sign(params, config.secret, {
+//agendex_do_vandinho
+function gerarToken(params) {
+    return jwt.sign(params, config.secret, {
         expiresIn: 86400,
     });
 }
