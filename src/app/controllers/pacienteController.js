@@ -1,11 +1,11 @@
 const express = require('express');
-const authMiddleware = require('../middlewares/auth')
+const authMiddleware = require('../middlewares/auth');
 
 const Paciente = require('../models/paciente');
 
 const router = express.Router();
 
-//router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.get('/', async (req, res) => {
     try {

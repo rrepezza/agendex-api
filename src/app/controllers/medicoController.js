@@ -1,5 +1,5 @@
 const express = require('express');
-//const authMiddleware = require('../middlewares/auth')
+const authMiddleware = require('../middlewares/auth');
 
 const Medico = require('../models/medico');
 
@@ -8,6 +8,15 @@ const router = express.Router();
 router.use(authMiddleware);
 
 router.post('/', async (req, res) => {
+    try {
+        const medico = await Medico.create(req.body);
+        return res.send({ medico });
+    } catch (error) {
+        return res.status(400).send({ error: 'Erro ao cadastrar médico.'});
+    }
+});
+
+router.put('/:medicoId', async (req, res) => {
     try {
         const medico = await Medico.create(req.body);
         return res.send({ medico });

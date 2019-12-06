@@ -10,6 +10,7 @@ const AgendamentoSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    /*
     cpfPaciente: {
         type: String,
         required: true,
@@ -18,7 +19,7 @@ const AgendamentoSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    /*
+    */
     paciente: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Paciente',
@@ -29,7 +30,6 @@ const AgendamentoSchema = new mongoose.Schema({
         ref: 'Medico',
         required: true,
     },
-    */
     criadoEm: {
         type: Date,
         default: Date.now,
