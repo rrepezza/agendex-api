@@ -5,7 +5,7 @@ const Medico = require('../models/medico');
 
 const router = express.Router();
 
-//router.use(authMiddleware);
+router.use(authMiddleware);
 
 router.post('/', async (req, res) => {
     try {
