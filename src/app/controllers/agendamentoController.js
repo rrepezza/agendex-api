@@ -36,6 +36,24 @@ router.get('/:agendamentoId', async (req, res) => {
     }
 });
 
+router.get('/:pacienteId', async (req, res) => {
+    try {
+        const agendamento = await Agendamento.findById(req.params.pacienteId).populate(['medico']);
+        return res.send({ agendamento });
+    } catch (error) {
+        return res.status(400).send({ error: 'Erro ao buscar o agendamento.'});
+    }
+});
+
+router.get('/:medicoId', async (req, res) => {
+    try {
+        const agendamento = await Agendamento.findById(req.params.medicoId).populate(['paciente']);
+        return res.send({ agendamento });
+    } catch (error) {
+        return res.status(400).send({ error: 'Erro ao buscar o agendamento.'});
+    }
+});
+
 router.get('/:medicoId/:dataAgendamento', async (req, res) => {
     try {
         const agendamentos = await Agendamento.find({ medico: req.params.medicoId, dataAgendamento: req.params.dataAgendamento });

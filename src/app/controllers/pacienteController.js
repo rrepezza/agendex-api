@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-/*
+
 router.get('/:pacienteId', async (req, res) => {
     try {
         const paciente = await Paciente.findById(req.params.pacienteId);
@@ -25,7 +25,7 @@ router.get('/:pacienteId', async (req, res) => {
         return res.status(400).send({ error: 'Erro ao buscar o paciente.'});
     }
 });
-*/
+
 
 router.get('/:cpf', async (req, res) => {
     try {
